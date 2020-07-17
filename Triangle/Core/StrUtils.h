@@ -19,7 +19,7 @@ namespace sge {
             char buffer[1024] = { 0 };
             memset(buffer, 0, 1024);
             size_t size = snprintf(buffer, 1024, format, args...);
-            return std::string(buffer);
+            return std::string(buffer, size);
         }
 
         EXTERN static std::string trim(std::string &str);
