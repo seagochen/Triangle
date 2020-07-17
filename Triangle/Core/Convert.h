@@ -2,45 +2,86 @@
 #ifndef _TRI_CONVERT_H_
 #define _TRI_CONVERT_H_
 
-#include "TypeDef.h"
 #include "SysInterfaces.h"
+#include "TypeDefinition.h"
+#include <string>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace sge {
 
-    EXTERN int_n  convert_str_int(char const* str, size_n size);
+    class Converter {
 
-    EXTERN long_n convert_str_long(char const* str, size_n size);
+    public:
 
-    EXTERN float_n convert_str_float(char const* str, size_n size);
+        EXTERN static int_n str_to_int(std::string str);
 
-    EXTERN double_n convert_str_double(char const* str, size_n size);
+        EXTERN static long_n str_to_long(std::string str);
 
-    EXTERN bool_n convert_int_str(int_n const n, char* out, size_n& size);
+        EXTERN static float_n str_to_float(std::string str);
 
-    EXTERN bool_n convert_long_str(long_n const n, char* out, size_n& size);
+        EXTERN static double_n str_to_double(std::string str);
 
-    EXTERN bool_n convert_float_str(float_n const n, char* out, size_n& size);
+        EXTERN static bool_n int_to_str(int_n const n, std::string &str);
 
-    EXTERN bool_n convert_double_str(double_n const n, char* out, size_n& size);
+        EXTERN static bool_n long_to_str(long_n const n, std::string& str);
 
-    EXTERN size_n tstrlen(char_n const* ptr);
+        EXTERN static bool_n float_to_str(float_n const n, std::string& str);
 
-    /// ptr converter for local machine ///
-    /// This method will create a backup
-    /// so you need to pay attention to the memory release 
-    /// after the end of use.
-    EXTERN char_n const* cstr_wrap(char const* ptr);
+        EXTERN static bool_n double_to_str(double_n const n, std::string& str);
 
-    /// ptr converter for local machine ///
-    /// This method will create a backup
-    /// so you need to pay attention to the memory release 
-    /// after the end of use.
-    EXTERN char const* cstr_uwrap(char_n const* ptr);
+        /**
+        * convert int_n to byte_n array
+        * @param n, the number to convert
+        * @param p, the pointer could be a nullptr
+        */
+        EXTERN static byte_n* itob(int_n const n, byte_n** p = nullptr);
 
-#ifdef __cplusplus
+        /**
+        * convert long_n to byte_n array
+        * @param n, the number to convert
+        * @param p, the pointer could be a nullptr
+        */
+        EXTERN static byte_n* ltob(long_n const n, byte_n** p = nullptr);
+
+        /**
+        * convert float_n to byte_n array
+        * @param n, the number to convert
+        * @param p, the pointer could be a nullptr
+        */
+        EXTERN static byte_n* ftob(float_n const n, byte_n** p = nullptr);
+
+        /**
+        * convert double_n to byte_n array
+        * @param n, the number to convert
+        * @param p, the pointer could be a nullptr
+        */
+        EXTERN static byte_n* dtob(double_n const n, byte_n** p = nullptr);
+
+        /**
+        * convert byte_n array to int_n
+        * @param n, the number to convert
+        * @param p, the pointer could be a nullptr
+        */
+        EXTERN static int_n btoi(byte_n const* p);
+
+        /**
+        * convert byte_n array to long_n
+        * @param n, the number to convert
+        */
+        EXTERN static long_n btol(byte_n const* p);
+
+        /**
+        * convert byte_n array to float_n
+        * @param n, the number to convert
+        */
+        EXTERN static float_n btof(byte_n const* p);
+
+        /**
+        * convert byte_n array to double_n
+        * @param n, the number to convert
+        */
+        EXTERN static double_n btod(byte_n const* p);
+    };
+
 };
-#endif
 
 #endif

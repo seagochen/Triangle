@@ -2,14 +2,16 @@
 #include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <string>
+
 #if _WIN32
 #include <malloc.h>
 #endif
 
-int_n convert_str_int(char const* str, size_n size)
-{
+using namespace sge;
+
+int_n Converter::str_to_int(std::string str) {
     try {
-        int_n n = boost::lexical_cast<int_n>(str, size);
+        int_n n = boost::lexical_cast<int_n>(str.c_str(), str.length());
         return n;
     }
     catch (const boost::bad_lexical_cast& e) {
@@ -19,10 +21,10 @@ int_n convert_str_int(char const* str, size_n size)
     return -1;
 }
 
-long_n convert_str_long(char const* str, size_n size)
+long_n Converter::str_to_long(std::string str)
 {
     try {
-        long_n n = boost::lexical_cast<long_n>(str, size);
+        long_n n = boost::lexical_cast<long_n>(str.c_str(), str.length());
         return n;
     }
     catch (const boost::bad_lexical_cast& e) {
@@ -32,10 +34,10 @@ long_n convert_str_long(char const* str, size_n size)
     return -1;
 }
 
-float_n convert_str_float(char const* str, size_n size)
+float_n Converter::str_to_float(std::string str)
 {
     try {
-        float_n n = boost::lexical_cast<float_n>(str, size);
+        float_n n = boost::lexical_cast<float_n>(str.c_str(), str.length());
         return n;
     }
     catch (const boost::bad_lexical_cast& e) {
@@ -45,10 +47,10 @@ float_n convert_str_float(char const* str, size_n size)
     return -1;
 }
 
-double_n convert_str_double(char const* str, size_n size)
+double_n Converter::str_to_double(std::string str)
 {
     try {
-        double_n n = boost::lexical_cast<double_n>(str, size);
+        double_n n = boost::lexical_cast<double_n>(str.c_str(), str.length());
         return n;
     }
     catch (const boost::bad_lexical_cast& e) {
@@ -56,88 +58,139 @@ double_n convert_str_double(char const* str, size_n size)
     }
 
     return -1;
-};
+}
 
 template<typename T>
-bool_n convert_n_str(T const n, char* out, size_n& size)
+size_n number_to_str(T const n, std::string &out)
 {
-    if (out == nullptr) {
-        std::cerr << "ptr cannot be a null" << std::endl;
-        return FALSE;
-    }
+    out = boost::lexical_cast<std::string>(n);
+    return out.length();
+}
 
-    std::string str = boost::lexical_cast<std::string>(n);
-    memcpy(out, str.c_str(), str.length());
-    size = str.length();
+bool_n Converter::int_to_str(int_n const n, std::string& str)
+{
+    if (number_to_str(n, str) < 0) { return FALSE; }
     return TRUE;
 }
 
-bool_n convert_int_str(int_n const n, char* out, size_n& size)
+bool_n Converter::long_to_str(long_n const n, std::string& str)
 {
-    return convert_n_str<int_n>(n, out, size);
-};
-
-bool_n convert_long_str(long_n const n, char* out, size_n& size)
-{
-    return convert_n_str<long_n>(n, out, size);
-};
-
-bool_n convert_float_str(float_n const n, char* out, size_n& size)
-{
-    return convert_n_str<float_n>(n, out, size);
-};
-
-bool_n convert_double_str(double_n const n, char* out, size_n& size)
-{
-    return convert_n_str<double_n>(n, out, size);
+    if (number_to_str(n, str) < 0) { return FALSE; }
+    return TRUE;
 }
 
-
-size_n tstrlen(char_n const* ptr)
+bool_n Converter::float_to_str(float_n const n, std::string& str)
 {
-    size_n n = 0;
-    while (ptr[++n] != 0) {}
-    return n;
+    if (number_to_str(n, str) < 0) { return FALSE; }
+    return TRUE;
 }
 
-
-char_n const* cstr_wrap(char const* ptr)
+bool_n Converter::double_to_str(double_n const n, std::string& str)
 {
-    size_n size = strlen(ptr);
-    char_n* dst = (char_n*)malloc(sizeof(char_n) * (size + 1));
-
-    if (dst == nullptr) {
-        std::cerr << "malloc space for cstr failed" << std::endl;
-        return nullptr;
-    }
-
-    // set the buffer to zero
-    memset(dst, 0, sizeof(char_n) * (size + 1));
-
-    // copy data
-    for (size_n i = 0; i < size; i++) {
-        dst[i] = ptr[i];
-    }
-
-    // return to caller
-    return dst;
+    if (number_to_str(n, str) < 0) { return FALSE; }
+    return TRUE;
 }
 
-char const* cstr_uwrap(char_n const* ptr)
+byte_n* Converter::itob(int_n const n, byte_n** p)
 {
-    size_n size = tstrlen(ptr);
-    char* dst = (char*)malloc(size);
-
-    if (dst == nullptr) {
-        std::cerr << "malloc space for char_n of cstr failed" << std::endl;
-        return nullptr;
+    byte_n* temp = nullptr;
+    if (p == nullptr || *p == nullptr) {
+        temp = (byte_n*)malloc(sizeof(int_n));
+    }
+    else {
+        temp = *p;
     }
 
-    // copy data
-    for (size_n i = 0; i < size; i++) {
-        dst[i] = (char)ptr[i];
+    // to avoid nullptr
+    if (temp == nullptr) return nullptr;
+
+    // convert data to ptr
+    memcpy(temp, &n, sizeof(int_n));
+    return temp;
+}
+
+byte_n* Converter::ltob(long_n const n, byte_n** p)
+{
+    byte_n* temp = nullptr;
+    if (p == nullptr || *p == nullptr) {
+        temp = (byte_n*)malloc(sizeof(long_n));
+    }
+    else {
+        temp = *p;
     }
 
-    // return to caller
-    return dst;
-};
+    // to avoid nullptr
+    if (temp == nullptr) return nullptr;
+
+    // convert data to ptr
+    memcpy(temp, &n, sizeof(long_n));
+    return temp;
+}
+
+byte_n* Converter::ftob(float_n const n, byte_n** p)
+{
+    byte_n* temp = nullptr;
+    if (p == nullptr || *p == nullptr) {
+        temp = (byte_n*)malloc(sizeof(float_n));
+    }
+    else {
+        temp = *p;
+    }
+
+    // to avoid nullptr
+    if (temp == nullptr) return nullptr;
+
+    // convert data to ptr
+    memcpy(temp, &n, sizeof(float_n));
+    return temp;
+}
+
+byte_n* Converter::dtob(double_n const n, byte_n** p)
+{
+    byte_n* temp = nullptr;
+    if (p == nullptr || *p == nullptr) {
+        temp = (byte_n*)malloc(sizeof(double_n));
+    }
+    else {
+        temp = *p;
+    }
+
+    // to avoid nullptr
+    if (temp == nullptr) return nullptr;
+
+    // convert data to ptr
+    memcpy(temp, &n, sizeof(double_n));
+    return temp;
+}
+
+EXTERN int_n Converter::btoi(byte_n const* p)
+{
+    if (p == nullptr) return 0;
+
+    int_n* temp = (int_n*)p;
+    return *temp;
+}
+
+long_n Converter::btol(byte_n const* p)
+{
+    if (p == nullptr) return 0;
+
+    long_n* temp = (long_n*)p;
+    return *temp;
+}
+
+float_n Converter::btof(byte_n const* p)
+{
+    if (p == nullptr) return 0;
+
+    float_n* temp = (float_n*)p;
+    return *temp;
+}
+
+EXTERN double_n Converter::btod(byte_n const* p)
+{
+    if (p == nullptr) return 0;
+
+    double_n* temp = (double_n*)p;
+    return *temp;
+}

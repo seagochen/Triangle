@@ -335,7 +335,7 @@ ASALocalRun/
 .vscode/
 .tora/
 res/
-bin/
+dist/
 *.DS_Store
 *.out
 pyenv/

@@ -4,41 +4,41 @@
 
 
 #include "SysInterfaces.h"
-#include "TypeDef.h"
+#include "TypeDefinition.h"
+#include <string>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace sge {
 
-    EXTERN bool_n reg_match_email(char const* str);
+    class Validator {
 
-    EXTERN bool_n reg_match_phone(char const* str);
+    public:
 
-    EXTERN bool_n reg_match_number(char const* str);
+        EXTERN static bool_n match_email(std::string str);
 
-    EXTERN bool_n reg_match_words(char const* str);
+        EXTERN static bool_n match_phone(std::string str);
 
-    EXTERN bool_n reg_match_filepath(char const* str);
+        EXTERN static bool_n match_number(std::string str);
 
-    EXTERN bool_n reg_match_time_24f(char const* str);
+        EXTERN static bool_n match_words(std::string str);
 
-    EXTERN bool_n reg_match_time_12f(char const* str);
+        EXTERN static bool_n match_filepath(std::string str);
 
-    EXTERN bool_n reg_match_datetime(char const* str);
+        EXTERN static bool_n match_time_24f(std::string str);
 
-    EXTERN bool_n reg_match_ipv4(char const* str);
+        EXTERN static bool_n match_time_12f(std::string str);
 
-    EXTERN bool_n reg_match_ipv4_group(char const* str, type_n CLASS);
+        EXTERN static bool_n match_datetime(std::string str);
 
-    EXTERN bool_n reg_match_pattern(char const* str, char const* pattern);
+        EXTERN static bool_n match_ipv4(std::string str);
 
-    EXTERN bool_n reg_contains_pattern(char const* str, char const* pattern);
+        EXTERN static bool_n match_ipv4_group(std::string str, type_n CLASS);
 
-#ifdef __cplusplus
-}
-#endif
+        EXTERN static bool_n match_pattern(std::string str, std::string pattern);
 
-/** Other useful patterns for regular check **/
+        EXTERN static bool_n contains_pattern(std::string str, std::string pattern);
+    };
+
+    /** Other useful patterns for regular check **/
 
 // Class A 10.0.0.0~10.255.255.255
 #define IPV4_CLASS_A    1
@@ -57,5 +57,6 @@ extern "C" {
 
 // from 0.0.0.0 ~ 255.255.255.255
 #define IPV4_CLASS_DEFAULT 0
+}
 
 #endif

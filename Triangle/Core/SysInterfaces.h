@@ -14,7 +14,7 @@
 #ifdef _WIN32
     #define EXTERN MS_API
 #else
-    #define EXTERN extern
+    #define EXTERN
 #endif
 
 #endif

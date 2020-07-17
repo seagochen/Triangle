@@ -3,43 +3,44 @@
 #define _TRI_FILE_IO_H_
 
 #include "SysInterfaces.h"
-#include "TypeDef.h"
-#include "List.h"
+#include "TypeDefinition.h"
+#include <vector>
+#include <string>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace sge {
 
-    // load data from file, in bytes
-    // This method will create a backup
-    // so you need to pay attention to the memory release 
-    // after the end of use.
-    EXTERN char* file_read(char const* filename, size_n& size);
+    struct FileNode {
+        byte_n* data;
+        size_n length;
+    };
+	
+    class FileIO {
+    public:
+        // load data from file, in bytes
+        EXTERN static void read(std::string filename, struct FileNode &node);
 
-    // write data to file, in bytes
-    // This method will create a backup
-    // so you need to pay attention to the memory release 
-    // after the end of use.
-    EXTERN void file_write(char const* filename, char * b, size_n size);
+        // write data to file, in bytes
+        EXTERN static void write(std::string filename, struct FileNode& node);
 
-    // get the file size
-    EXTERN size_n file_size(char const* filepath);
+        // get the file size
+        EXTERN static size_n length(std::string filepath);
 
-    // does the file exist?
-    EXTERN bool_n path_if_exist(char const* path);
+        // does the file exist?
+        EXTERN static bool_n is_exist(std::string path);
 
-    // is path a file?
-    EXTERN bool_n path_if_file(char const* path);
+        // is path a file?
+        EXTERN static bool_n is_file(std::string path);
 
-    // is path a dir?
-    EXTERN bool_n path_if_dir(char const* path);
+        // is path a dir?
+        EXTERN static bool_n isDir(std::string path);
 
-    // iterate a given path, list all files
-    EXTERN list* search_files(char const* path, char const* pattern = "*");
-
-#ifdef __cplusplus
+        // iterate a given path, list all files
+        EXTERN static std::vector<std::string> searchFiles(std::string path, std::string pattern = "*");
+	};
 };
-#endif
+
+
+
 
 #endif
 

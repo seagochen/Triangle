@@ -3,29 +3,26 @@
 #define _TRI_HASH_CODE_H_
 
 #include "SysInterfaces.h"
-#include "TypeDef.h"
+#include "TypeDefinition.h"
+#include <string>
 
-#if __cplusplus
-extern "C" {
-#endif
+namespace sge {
 
-    // get the string of md5
-    // This method will create a new space of md5 string
-    // so you need to pay attention to the memory release 
-    // after the end of use.
-    EXTERN char* code_md5(void const* dataset, size_n len);
+    class HashCode {
+    //private:
+        //static char buffer[128];
 
-    // get the string of sha256
-    // This method will create a new space of sha256 string
-    // so you need to pay attention to the memory release 
-    // after the end of use.
-    EXTERN char* code_sha256(void const* dataset, size_n len);
+    public:
 
+        // get the string of md5
+        EXTERN static std::string md5(void const* dataset, size_n len);
 
-    EXTERN char* code_sha1(void const* dataset, size_n len);
+        // get the string of sha256
+        EXTERN static std::string sha256(void const* dataset, size_n len);
 
-#if __cplusplus
+        // get the string of sha1
+        EXTERN static std::string sha1(void const* dataset, size_n len);
+    };
 };
-#endif
 
 #endif

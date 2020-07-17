@@ -102,6 +102,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +131,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,50 +141,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Convert.cpp" />
-    <ClCompile Include="DefTime.cpp" />
-    <ClCompile Include="Digits.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="HashCode.cpp" />
-    <ClCompile Include="HostInfo.cpp" />
-    <ClCompile Include="List.cpp" />
-    <ClCompile Include="ListNode.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapNode.cpp" />
     <ClCompile Include="MD5.cpp" />
     <ClCompile Include="SHA1.cpp" />
-    <ClCompile Include="SocketDef.cpp" />
     <ClCompile Include="StrUtils.cpp" />
-    <ClCompile Include="SystemIO.cpp" />
-    <ClCompile Include="TCPAgent.cpp" />
-    <ClCompile Include="UDPAgent.cpp" />
     <ClCompile Include="Validators.cpp" />
-    <ClCompile Include="winfdx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommonTool.h" />
+    <ClInclude Include="CommonTool.hpp" />
     <ClInclude Include="Convert.h" />
-    <ClInclude Include="DefTime.h" />
-    <ClInclude Include="Digits.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="HashCode.h" />
-    <ClInclude Include="HostInfo.h" />
-    <ClInclude Include="List.h" />
-    <ClInclude Include="ListNode.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="MapNode.h" />
     <ClInclude Include="MD5.h" />
     <ClInclude Include="SHA1.h" />
     <ClInclude Include="SHA256.h" />
-    <ClInclude Include="SocketDef.h" />
     <ClInclude Include="StrUtils.h" />
     <ClInclude Include="SysInterfaces.h" />
     <ClInclude Include="SystemEnv.h" />
-    <ClInclude Include="SystemIO.h" />
-    <ClInclude Include="TCPAgent.h" />
     <ClInclude Include="Core.hpp" />
-    <ClInclude Include="TypeDef.h" />
-    <ClInclude Include="UDPAgent.h" />
+    <ClInclude Include="TypeDefinition.h" />
     <ClInclude Include="Validators.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

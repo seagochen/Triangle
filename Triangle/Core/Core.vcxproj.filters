@@ -18,31 +18,10 @@
     <ClCompile Include="Convert.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="List.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="FileIO.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="winfdx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemIO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ListNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="HashCode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPAgent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="UDPAgent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SocketDef.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Validators.cpp">
@@ -51,25 +30,13 @@
     <ClCompile Include="StrUtils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DefTime.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="MD5.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SHA1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="HostInfo.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MapNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Digits.cpp">
+    <ClCompile Include="Timer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,43 +47,19 @@
     <ClInclude Include="SystemEnv.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TypeDef.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="List.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Convert.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FileIO.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SystemIO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ListNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="HashCode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TCPAgent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="UDPAgent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SocketDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Validators.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="StrUtils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DefTime.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MD5.h">
@@ -128,23 +71,20 @@
     <ClInclude Include="SHA1.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HostInfo.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MapNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonTool.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Digits.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Core.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CommonTool.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeDefinition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

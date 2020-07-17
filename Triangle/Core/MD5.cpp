@@ -244,14 +244,14 @@ static char hb2hex(unsigned char hb) {
     return hb < 10 ? '0' + hb : hb - 10 + 'a';
 }
 
-string md5file(const char* filename) {
+string MD5::md5file(const char* filename) {
     std::FILE* file = std::fopen(filename, "rb");
     string res = md5file(file);
     std::fclose(file);
     return res;
 }
 
-string md5file(std::FILE* file) {
+string MD5::md5file(std::FILE* file) {
 
     MD5_CTX c;
     MD5_Init(&c);
@@ -272,7 +272,7 @@ string md5file(std::FILE* file) {
     return res;
 }
 
-string md5(const void* dat, size_t len) {
+string MD5::md5(const void* dat, size_t len) {
     string res;
     unsigned char out[16];
     md5bin(dat, len, out);
@@ -283,12 +283,12 @@ string md5(const void* dat, size_t len) {
     return res;
 }
 
-std::string md5(std::string dat) {
-    return md5(dat.c_str(), dat.length());
+std::string MD5::md5(std::string dat) {
+    return MD5::md5(dat.c_str(), dat.length());
 }
 
 /* Generate shorter md5sum by something like base62 instead of base16 or base10. 0~61 are represented by 0-9a-zA-Z */
-string md5sum6(const void* dat, size_t len) {
+string MD5::md5sum6(const void* dat, size_t len) {
     static const char* tbl = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     string res;
     unsigned char out[16];
@@ -299,6 +299,6 @@ string md5sum6(const void* dat, size_t len) {
     return res;
 }
 
-std::string md5sum6(std::string dat) {
+std::string MD5::md5sum6(std::string dat) {
     return md5sum6(dat.c_str(), dat.length());
 }
