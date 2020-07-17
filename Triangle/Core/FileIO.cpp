@@ -92,7 +92,7 @@ bool_n FileIO::isDir(std::string path)
     return is_directory(p);
 }
 
-std::vector<std::string> FileIO::searchFiles(std::string path, std::string pattern)
+std::vector<std::string> FileIO::search_files(std::string path, std::string pattern)
 {
     using namespace boost::filesystem;
 
@@ -129,7 +129,7 @@ std::vector<std::string> FileIO::searchFiles(std::string path, std::string patte
 
         else if (is_directory(itr->path())) {
             // search files from sub folders
-            std::vector<std::string> sub_files = searchFiles(itr->path().string().c_str(), pattern);
+            std::vector<std::string> sub_files = search_files(itr->path().string().c_str(), pattern);
 
             if (sub_files.size() <= 0) { // skip
                 continue;

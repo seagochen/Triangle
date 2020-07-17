@@ -35,7 +35,7 @@ namespace sge {
         EXTERN static bool_n isDir(std::string path);
 
         // iterate a given path, list all files
-        EXTERN static std::vector<std::string> searchFiles(std::string path, std::string pattern = "*");
+        EXTERN static std::vector<std::string> search_files(std::string path, std::string pattern = "*");
 	};
 };
 

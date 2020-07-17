@@ -53,7 +53,7 @@ void FileIOTest() {
     cout << "file size:" << FileIO::length(file) << endl;
     
     // search files
-    vector<string> files = FileIO::searchFiles(dir);
+    vector<string> files = FileIO::search_files(dir);
     for (auto f : files) {
         cout << f << endl;
     }
