@@ -1,9 +1,6 @@
 #ifndef _TRI_TYPE_DEFINE_H_
 #define _TRI_TYPE_DEFINE_H_
 
-#include <boost/cstdint.hpp>
-#include <boost/cstdfloat.hpp>
-
 namespace sge {
 
 	/// some other types ///
