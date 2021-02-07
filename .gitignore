@@ -342,3 +342,4 @@ pyenv/
 libTriangle.so
 thirds/
 .idea/
+build/

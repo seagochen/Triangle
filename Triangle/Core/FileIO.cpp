@@ -83,7 +83,7 @@ bool_n FileIO::is_file(std::string path)
     return is_regular_file(p);
 }
 
-bool_n FileIO::isDir(std::string path)
+bool_n FileIO::is_dir(std::string path)
 {
     using namespace boost::filesystem;
 
