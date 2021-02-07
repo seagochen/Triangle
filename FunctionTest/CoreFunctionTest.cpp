@@ -6,6 +6,10 @@
 using namespace std;
 using namespace sge;
 
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
 void ConverterTest() {
     cout << Converter::str_to_int("11") << endl;
     cout << Converter::str_to_long("134598755687") << endl;
@@ -36,18 +40,28 @@ void ConverterTest() {
 }
 
 void FileIOTest() {
-    string file = "D:\\OneDrive\\Triangle\\README.md";
-    string dir = "D:\\OneDrive\\Triangle";
+#if _WIN32
+    string file = ".\\README.md";
+    string dir = ".\\Triangle";
+#else
+    string file = "./README.md";
+    string dir = "./Triangle";
+#endif
     
     cout << "is exist:" << FileIO::is_exist(dir)
         << "\tis file:" << FileIO::is_file(file) 
-        << "\tis dir:" << FileIO::isDir(file) << endl;
+        << "\tis dir:" << FileIO::is_dir(file) << endl;
 
     // read and write file
     FileNode node = { 0 };
     FileIO::read(file, node);
     string str((const char*)node.data, node.length);
-    FileIO::write("D:\\OneDrive\\Triangle\\output.txt", node);
+
+#if _WIN32
+    FileIO::write(".\\build\\output.txt", node);
+#else
+    FileIO::write("./build/output.txt", node);
+#endif
 
     // read file size
     cout << "file size:" << FileIO::length(file) << endl;
@@ -87,7 +101,11 @@ void TimerTest() {
     cout << "start timer\n";
     Timer t;
     t.start();
+#if _WIN32
     Sleep(1000);
+#else
+    sleep(1);
+#endif
     cout << "end timer: " << t.stop() << endl;
 }
 
@@ -97,24 +115,24 @@ void ValidatorTest() {
     cout << Validator::match_ipv4("137.1.2.3") << endl;
 }
 
-//int main() {
-//
-//    ConverterTest();
-//    cout << "Converter test done" << endl;
-//
-//    FileIOTest();
-//    cout << "FileIO test done" << endl;
-//
-//    HashCodeTest();
-//    cout << "HashCode test done" << endl;
-//    
-//    StrUtilsTest();
-//    cout << "StrUtils test done" << endl;
-//
-//    TimerTest();
-//    cout << "Timer test done" << endl;
-//
-//    ValidatorTest();
-//    cout << "Validator test done" << endl;
-//    return 0;
-//}
+int main() {
+
+   ConverterTest();
+   cout << "Converter test done" << endl;
+
+   FileIOTest();
+   cout << "FileIO test done" << endl;
+
+   HashCodeTest();
+   cout << "HashCode test done" << endl;
+   
+   StrUtilsTest();
+   cout << "StrUtils test done" << endl;
+
+   TimerTest();
+   cout << "Timer test done" << endl;
+
+   ValidatorTest();
+   cout << "Validator test done" << endl;
+   return 0;
+}

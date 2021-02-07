@@ -10,7 +10,7 @@
 namespace sge {
 
     struct FileNode {
-        byte_n* data;
+        char_n* data = nullptr;
         size_n length;
     };
 	
