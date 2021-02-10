@@ -20,67 +20,43 @@ using namespace boost;
 
 void FileIO::read(std::string filename, struct FileNode& node)
 {
-    // if (not is_file(filename)) {
-    //     throw PTR_ERROR(__FILE__, __LINE__, "Filename cannot be null or empty");
-    // }
-
-    // // get the file length
-    // std::ifstream file(filename, std::ios::binary | std::ios::ate);
-    // std::ifstream::pos_type pos = file.tellg();
-    // std::streamoff len = pos;
-
-    // if (node.data == nullptr || node.length <= len) {
-    //     node.data = (char_n*) malloc(len);
-    //     node.length = len;
-    // }
-
-    // // read data to ptr
-    // file.seekg(0, std::ios::beg);
-    // file.read((char*)node.data, len);
-    // file.close();
-
-    ////////////////////////
-
-    filesystem::ifstream file;
-    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
-    filesystem::path path(filename);
-    file.open(path, std::ios_base::binary);
-    node.length = static_cast<std::size_t>(filesystem::file_size(path));
-
-    if (node.data != nullptr) {
-        SAFE_FREE(node.data);
-        node.data = (char_n*)malloc(node.length * sizeof(char_n));
+    if (not is_file(filename)) {
+        throw PTR_ERROR(__FILE__, __LINE__, "Filename cannot be null or empty");
     }
-    
-    file.read(node.data, node.length);
+
+    // get the file length
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+    std::ifstream::pos_type pos = file.tellg();
+    std::streamoff len = pos;
+
+    if (node.data == nullptr || node.length <= len) {
+        node.data = (char_n*) malloc(len);
+        node.length = len;
+    }
+
+    // read data to ptr
+    file.seekg(0, std::ios::beg);
+    file.read((char*)node.data, len);
+    file.close();
 }
 
 
 void FileIO::write(std::string filename, struct FileNode& node)
 {
-    // if (node.length <= 0 || node.data == nullptr) {
-    //     throw PTR_ERROR(__FILE__, __LINE__, "Data is null or data length is invalid");
-    // }
+    if (node.length <= 0 || node.data == nullptr) {
+        throw PTR_ERROR(__FILE__, __LINE__, "Data is null or data length is invalid");
+    }
 
-    // std::fstream file;
-    // file.open(filename, std::ios::out | std::ios::binary);
-    // if (!file) {
-    //     throw PTR_ERROR(__FILE__, __LINE__, "Error(s) occurs while writing to file");
-    // }
+    std::fstream file;
+    file.open(filename, std::ios::out | std::ios::binary);
+    if (!file) {
+        throw PTR_ERROR(__FILE__, __LINE__, "Error(s) occurs while writing to file");
+    }
 
-    // // write data to file
-    // file.seekg(0, std::ios::beg);
-    // file.write((const char*)node.data, node.length);
-    // file.close();
-
-    //////////////////////////////
-
-    filesystem::ofstream file;
-    file.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-    filesystem::path path(filename);
-    file.open(path, std::ios_base::binary);
-    file.write(node.data, node.length);
+    // write data to file
+    file.seekg(0, std::ios::beg);
+    file.write((const char*)node.data, node.length);
+    file.close();
 }
 
 

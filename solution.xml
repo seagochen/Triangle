@@ -5,10 +5,6 @@
             <item>std=c++14</item>
         </flags>
 
-         <!-- <pkgs> -->
-            <!-- <item>boost</item>  -->
-        <!-- </pkgs> -->
-
         <!-- <macros>-->
             <!-- <define name="BOOST_SYSTEM_NO_DEPRECATED"/> -->
         <!-- </macros> -->
@@ -16,6 +12,7 @@
 
     <!-- There is only one solution in a configuration file, and there can be multiple projects in a solution  -->
     <solution>
+
         <!-- Three types available, dynamic, static, exe -->
         <project name="triangle" output="build" type="static" src="Triangle">
 
@@ -23,22 +20,29 @@
              but also support relative paths -->
             <includes>
                 <path>Triangle</path>
+                <!-- <path>/opt/boost/boost_1.75.0/include</path> -->
             </includes>
+
+            <libraries>
+                <item>-lboost_system</item>
+                <item>-lboost_filesystem</item>
+            </libraries>
 
         </project>
 
-                <!-- Three types available, dynamic, static, exe -->
+        <!-- Three types available, dynamic, static, exe -->
         <project name="test" output="build" type="exe" src="FunctionTest">
 
             <!-- Headers，non-system third-party header files, need to be given specific paths,
              but also support relative paths -->
             <includes>
                 <path>Triangle</path>
-                <path>/opt/boost/boost1.75/include</path>
+                <!-- <path>/opt/boost/boost_1.75.0/include</path> -->
             </includes>
 
             <libraries path="./build"/>
-            <libraries path="/opt/boost/boost1.75/lib">
+
+            <libraries>
                 <item>-lboost_system</item>
                 <item>-lboost_filesystem</item>
             </libraries>
