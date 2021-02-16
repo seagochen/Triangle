@@ -4,38 +4,60 @@
 
 #include "SysInterfaces.h"
 #include "TypeDefinition.h"
+
 #include <vector>
 #include <string>
 
 namespace sge {
 
-    struct FileNode {
-        char_n* data = nullptr;
-        size_n length;
-    };
-	
     class FileIO {
     public:
-        // load data from file, in bytes
-        EXTERN static void read(std::string filename, struct FileNode &node);
+        
+        /// <summary>
+        /// load data from file, returning in byte array
+        /// </summary>
+        /// <param name="filename">the path to a file</param>
+        /// <param name="node">the reference to a filenode</param>
+        EXTERN static const char* read(std::string filename);
 
-        // write data to file, in bytes
-        EXTERN static void write(std::string filename, struct FileNode& node);
+        /// <summary>
+        /// write data to file, in bytes
+        /// </summary>
+        /// <param name="filename">the path to a file</param>
+        /// <param name="node">the reference to a filenode</param>
+        EXTERN static void write(std::string filename, const char* fz);
 
-        // get the file size
+        /// <summary>
+        /// get the file size
+        /// </summary>
+        /// <param name="filename">the path to a file</param>
         EXTERN static size_n length(std::string filepath);
 
-        // does the file exist?
+        /// <summary>
+        /// does the file exist?
+        /// </summary>
+        /// <param name="path">the path to a file or directory</param>
         EXTERN static bool_n is_exist(std::string path);
 
-        // is path a file?
+        /// <summary>
+        /// is the path a file?
+        /// </summary>
+        /// <param name="path">the path to a file</param>        
         EXTERN static bool_n is_file(std::string path);
 
-        // is path a dir?
+        /// <summary>
+        /// is the path a directory?
+        /// </summary>
+        /// <param name="path">the path to a directory</param>   
         EXTERN static bool_n is_dir(std::string path);
 
-        // iterate a given path, list all files
-        EXTERN static std::vector<std::string> search_files(std::string path, std::string pattern = "*");
+        /// <summary>
+        /// iterate a given path, list all files
+        /// </summary>
+        /// <param name="path">the path to a directory</param> 
+        /// <param name="pattern">searching pattern, the default is *</param> 
+        EXTERN static std::vector<std::string>
+            search_files(std::string path, std::string pattern = "*");
 	};
 };
 

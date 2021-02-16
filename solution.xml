@@ -4,10 +4,6 @@
         <flags>
             <item>std=c++14</item>
         </flags>
-
-        <!-- <macros>-->
-            <!-- <define name="BOOST_SYSTEM_NO_DEPRECATED"/> -->
-        <!-- </macros> -->
     </requirements>
 
     <!-- There is only one solution in a configuration file, and there can be multiple projects in a solution  -->
@@ -20,10 +16,11 @@
              but also support relative paths -->
             <includes>
                 <path>Triangle</path>
-                <!-- <path>/opt/boost/boost_1.75.0/include</path> -->
+                <path>include</path>
+                <path>/opt/boost/boost_1.75.0/include</path>
             </includes>
 
-            <libraries>
+            <libraries path="/opt/boost/boost_1.75.0/lib">
                 <item>-lboost_system</item>
                 <item>-lboost_filesystem</item>
             </libraries>
@@ -37,18 +34,16 @@
              but also support relative paths -->
             <includes>
                 <path>Triangle</path>
-                <!-- <path>/opt/boost/boost_1.75.0/include</path> -->
+                <path>/opt/boost/boost_1.75.0/include</path>
             </includes>
 
             <libraries path="./build"/>
 
-            <libraries>
+            <libraries path="/opt/boost/boost_1.75.0/lib">
                 <item>-lboost_system</item>
                 <item>-lboost_filesystem</item>
             </libraries>
         </project>
-
-        <!-- Another project, the configuration is the same as the previous one -->
     </solution>
 
 </config>

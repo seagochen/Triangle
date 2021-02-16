@@ -18,5 +18,18 @@
     <ClCompile Include="CoreFunctionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="JsonHandlerTester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FunctionTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

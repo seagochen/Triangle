@@ -3,6 +3,14 @@
 #include <string>
 #include <iostream>
 
+#include "FunctionTest.h"
+
+#ifdef FUNC_TEST_1
+#define FUNCTION_UNIT_TEST
+#endif
+
+#ifdef FUNCTION_UNIT_TEST
+
 using namespace std;
 using namespace sge;
 
@@ -41,32 +49,31 @@ void ConverterTest() {
 
 void FileIOTest() {
 #if _WIN32
-    string file = ".\\README.md";
-    string dir = ".\\Triangle";
+    string file = "D:\\Repositories\\Repo\\Triangle\\README.md";
+    string dir = "D:\\Repositories\\Repo\\Triangle\\x64\\Debug";
 #else
     string file = "./README.md";
     string dir = "./Triangle";
 #endif
     
-    cout << "is exist:" << FileIO::is_exist(dir)
-        << "\tis file:" << FileIO::is_file(file) 
-        << "\tis dir:" << FileIO::is_dir(file) << endl;
+    std::cout << dir << " is exist:" << FileIO::is_exist(dir)  << std::endl
+        << file << " is file:" << FileIO::is_file(file) << std::endl
+        << file << " is dir:" << FileIO::is_dir(file) << endl;
 
     // read and write file
-    FileNode node = { 0 };
-    FileIO::read(file, node);
-    string str((const char*)node.data, node.length);
+    const char* fz = FileIO::read(file);
 
 #if _WIN32
-    FileIO::write(".\\build\\output.txt", node);
+    FileIO::write("D:\\Repositories\\Repo\\Triangle\\x64\\Debug\\output.txt", node);
 #else
-    FileIO::write("./build/output.txt", node);
+    FileIO::write("./build/output.txt", fz);
 #endif
 
     // read file size
-    cout << "file size:" << FileIO::length(file) << endl;
+    std::cout << "file size:" << FileIO::length(file) << std::endl;
     
     // search files
+    std::cout << "search files..." << std::endl;
     vector<string> files = FileIO::search_files(dir);
     for (auto f : files) {
         cout << f << endl;
@@ -136,3 +143,5 @@ int main() {
    cout << "Validator test done" << endl;
    return 0;
 }
+
+#endif

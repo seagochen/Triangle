@@ -9,9 +9,6 @@
 namespace sge {
 
     class HashCode {
-    //private:
-        //static char buffer[128];
-
     public:
 
         // get the string of md5

@@ -1,11 +1,10 @@
-//#define BOOST_FILESYSTEM_NO_DEPRECATED
-
+/// c++ standard libraries
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+#include <memory>
+
+/// boost libraries
 #include <boost/filesystem.hpp>
-// #include <boost/filesystem/fstream.hpp>
-// #include <boost/filesystem/operations.hpp>
 
 #include <string>
 
@@ -18,7 +17,7 @@ using namespace sge;
 using namespace boost;
 
 
-void FileIO::read(std::string filename, struct FileNode& node)
+const char* FileIO::read(std::string filename)
 {
     if (not is_file(filename)) {
         throw PTR_ERROR(__FILE__, __LINE__, "Filename cannot be null or empty");
@@ -29,22 +28,23 @@ void FileIO::read(std::string filename, struct FileNode& node)
     std::ifstream::pos_type pos = file.tellg();
     std::streamoff len = pos;
 
-    if (node.data == nullptr || node.length <= len) {
-        node.data = (char_n*) malloc(len);
-        node.length = len;
-    }
+    // char ptr to hold the content copied from the given file
+    char* fz = (char*) calloc(len + 1, sizeof(char));
 
     // read data to ptr
     file.seekg(0, std::ios::beg);
-    file.read((char*)node.data, len);
+    file.read(fz, len);
     file.close();
+
+    // use shared ptr to wrap the original c97 ptr
+    return fz;
 }
 
 
-void FileIO::write(std::string filename, struct FileNode& node)
+void FileIO::write(std::string filename, const char* fz)
 {
-    if (node.length <= 0 || node.data == nullptr) {
-        throw PTR_ERROR(__FILE__, __LINE__, "Data is null or data length is invalid");
+    if (fz == nullptr) {
+        throw PTR_ERROR(__FILE__, __LINE__, "Data is null");
     }
 
     std::fstream file;
@@ -55,7 +55,7 @@ void FileIO::write(std::string filename, struct FileNode& node)
 
     // write data to file
     file.seekg(0, std::ios::beg);
-    file.write((const char*)node.data, node.length);
+    file.write(fz, strlen(fz));
     file.close();
 }
 

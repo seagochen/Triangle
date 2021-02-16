@@ -8,18 +8,39 @@
 #include "TypeDefinition.h"
 
 namespace sge {
+    /// <summary>
+    /// compare two numbers and return the maximal one
+    /// </summary>
+    /// <typeparam name="T">type can be integer, float</typeparam>
+    /// <param name="arg1"></param>
+    /// <param name="arg2"></param>
+    /// <returns></returns>
     template<typename T>
-    T const maxVal(T arg1, T arg2) {
+    T const max_val(T arg1, T arg2) {
         return arg1 > arg2 ? arg1 : arg2;
     };
 
+    /// <summary>
+    /// compare two numbers and return the minimal one
+    /// </summary>
+    /// <typeparam name="T">type can be integer, float</typeparam>
+    /// <param name="arg1"></param>
+    /// <param name="arg2"></param>
+    /// <returns></returns>
     template<typename T>
-    T const minVal(T arg1, T arg2) {
+    T const min_val(T arg1, T arg2) {
         return arg1 < arg2 ? arg1 : arg2;
     };
 
+    /// <summary>
+    /// calculate the average
+    /// </summary>
+    /// <typeparam name="T">type can be integer, float</typeparam>
+    /// <param name="arg1"></param>
+    /// <param name="arg2"></param>
+    /// <returns></returns>
     template<typename T>
-    T const avgVal(T arg1, T arg2) {
+    T const avg_val(T arg1, T arg2) {
         return ((double)(arg1 + arg2)) / 2.0;
     }
 };

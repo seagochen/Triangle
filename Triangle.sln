@@ -7,8 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Triangle\Core\Core.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FunctionTest", "FunctionTest\FunctionTest.vcxproj", "{2C80F272-0442-4697-A2FC-B8D460DAEB80}"
 	ProjectSection(ProjectDependencies) = postProject
+		{43453509-1CD5-4534-9C05-6937257FA5D7} = {43453509-1CD5-4534-9C05-6937257FA5D7}
 		{1BA816A0-7624-4196-A599-BAD436ED6FFA} = {1BA816A0-7624-4196-A599-BAD436ED6FFA}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JXml", "Triangle\JXml\JXml.vcxproj", "{43453509-1CD5-4534-9C05-6937257FA5D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +37,14 @@ Global
 		{2C80F272-0442-4697-A2FC-B8D460DAEB80}.Release|x64.Build.0 = Release|x64
 		{2C80F272-0442-4697-A2FC-B8D460DAEB80}.Release|x86.ActiveCfg = Release|Win32
 		{2C80F272-0442-4697-A2FC-B8D460DAEB80}.Release|x86.Build.0 = Release|Win32
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Debug|x64.ActiveCfg = Debug|x64
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Debug|x64.Build.0 = Debug|x64
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Debug|x86.ActiveCfg = Debug|Win32
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Debug|x86.Build.0 = Debug|Win32
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Release|x64.ActiveCfg = Release|x64
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Release|x64.Build.0 = Release|x64
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Release|x86.ActiveCfg = Release|Win32
+		{43453509-1CD5-4534-9C05-6937257FA5D7}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
