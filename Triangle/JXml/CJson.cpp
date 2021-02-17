@@ -3,29 +3,32 @@
 #include <string.h>
 #include <memory.h>
 
+/// rapid libraries
+#include <rapidjson/document.h>
+
+using namespace std;
 using namespace sge;
+using namespace rapidjson;
 
-JsonHandler::~JsonHandler()
-{
-}
 
-JsonHandler::JsonHandler()
-{
-    // an empty json string
-    handler.Parse("{}");
-}
 
-JsonHandler::JsonHandler(const std::string& str)
+JsonHandler::~JsonHandler() {}
+
+
+JsonHandler::JsonHandler() { handler.Parse("{}"); }
+
+
+JsonHandler::JsonHandler(string& str)
 {
     // parse an empty string
     if (str.empty()) {
         handler.Parse("{}");
-    } 
-    elif(Validator::match_filepath(str)) { 
+    }
+    elif(Validator::match_filepath(str)) {
         // this string contains a valid file path
         const char* fz = FileIO::read(str);
         handler.Parse(fz);
-        
+
         // to avoid memory leak
         SAFE_DELETE(fz);
     }
@@ -35,201 +38,215 @@ JsonHandler::JsonHandler(const std::string& str)
     }
 }
 
-bool_n JsonHandler::has_item(std::string key)
+
+string JsonHandler::to_str()
 {
-    return handler.HasMember(key.c_str());
-}
-
-JsonHandler& sge::JsonHandler::append_null(std::string skey)
-{
-    // create a pair value
-    rapidjson::Value val;
-    rapidjson::Value key(skey.c_str(), skey.size(),
-        handler.GetAllocator());
-    val.SetNull();
-
-    // add val to document
-    handler.AddMember(key, val, handler.GetAllocator());
-
-    // return this
-    return *this;
-}
-
-JsonHandler& JsonHandler::append_item(std::string skey, bool_n b)
-{
-    // create a pair value
-    rapidjson::Value val;
-    rapidjson::Value key(skey.c_str(), skey.size(),
-        handler.GetAllocator());
-    val.SetBool(true);
-
-    // add val to document
-    handler.AddMember(key, val, handler.GetAllocator());
-
-    // return this
-    return *this;
-}
-
-JsonHandler& JsonHandler::append_item(std::string skey, int_n n)
-{
-    // create a pair value
-    rapidjson::Value val;
-    rapidjson::Value key(skey.c_str(), skey.size(),
-        handler.GetAllocator());
-    val.SetInt(n);
-
-    // add val to document
-    handler.AddMember(key, val, handler.GetAllocator());
-
-    // return this
-    return *this;
-}
-
-JsonHandler& JsonHandler::append_item(std::string skey, double_n n)
-{
-    // create a pair value
-    rapidjson::Value val;
-    rapidjson::Value key(skey.c_str(), skey.size(),
-        handler.GetAllocator());
-    val.SetDouble(n);
-
-    // add val to document
-    handler.AddMember(key, val, handler.GetAllocator());
-
-    // return this
-    return *this;
-}
-
-JsonHandler& JsonHandler::append_item(std::string skey, std::string str)
-{
-    // create a pair value
-    rapidjson::Value val;
-    rapidjson::Value key(skey.c_str(), skey.size(),
-        handler.GetAllocator());
-    val.SetString(str.c_str(), str.length());
-
-    // add val to document
-    handler.AddMember(key, val, handler.GetAllocator());
-
-    // return this
-    return *this;
-}
-
-template<typename T>
-void generic_append_array(rapidjson::Document &handler,
-    std::string skey, T list[], size_n size) 
-{
-    // create an object type
-    rapidjson::Value key(skey.c_str(), skey.size(),
-        handler.GetAllocator());
-
-    // to get the allocator handler to iteratively append the values to the value object
-    rapidjson::Document::AllocatorType& allocator = handler.GetAllocator();
-    // value object to stores the array
-    rapidjson::Value value(rapidjson::kArrayType);
-
-    // iterative appending the values
-    for (int i = 0; i < size; i++) {
-        value.PushBack(list[i], allocator);
-    }
-
-    // add the value to the document
-    handler.AddMember(key, value, allocator);
-}
-
-JsonHandler& sge::JsonHandler::append_array(std::string key, bool_n list[], size_n size)
-{
-    // use generic method to avoid wasteful duplication of effort.
-    generic_append_array<bool_n>(handler, key, list, size);
-
-    // return this
-    return *this;
-}
-
-JsonHandler& sge::JsonHandler::append_array(std::string key, int_n list[], size_n size)
-{
-    // use generic method to avoid wasteful duplication of effort.
-    generic_append_array<int_n>(handler, key, list, size);
-
-    // return this
-    return *this;
-}
-
-JsonHandler& JsonHandler::append_array(std::string skey, const char* list[], size_n elems)
-{
-    // create an object key
-    rapidjson::Value key(skey.c_str(), skey.size(), handler.GetAllocator());
-
-    // to get the allocator handler to iteratively append the values to the value object
-    rapidjson::Document::AllocatorType& allocator = handler.GetAllocator();
-
-    // value object to stores the array
-    rapidjson::Value value(rapidjson::kArrayType);
-
-    // iterative appending the values
-    for (int i = 0; i < elems; i++) {
-        rapidjson::Value val(list[i], strlen(list[i]), handler.GetAllocator());
-        value.PushBack(val, allocator);
-    }
-
-    // add the value to the document
-    handler.AddMember(key, value, allocator);
-
-    // return this
-    return *this;
-}
-
-JsonHandler& sge::JsonHandler::append_array(std::string key, double_n list[], size_n size)
-{
-    // use generic method to avoid wasteful duplication of effort.
-    generic_append_array<double_n>(handler, key, list, size);
-
-    // return this
-    return *this;
-}
-
-JsonHandler& JsonHandler::append_json(std::string key, JsonHandler& handler)
-{
-    // parsing existing json string
-    return this->append_json(key, handler.to_cstr());
-}
-
-JsonHandler& JsonHandler::append_json(std::string skey, std::string json)
-{
-    // create an object key
-    rapidjson::Value key(skey.c_str(), skey.size(), handler.GetAllocator());
-
-    // to get the allocator handler to iteratively append the values to the value object
-    rapidjson::Document::AllocatorType& allocator = handler.GetAllocator();
-
-    // generate nested object
-    rapidjson::Value value(rapidjson::kObjectType);
-    JsonHandler sub(json.c_str());
-
-    // iterate the given json object and add each item to handler
-    std::vector<std::string> keys = sub.keys();
-
-    // return this
-    return *this;
-}
-
-void JsonHandler::operator=(const JsonHandler& D)
-{
-}
-
-std::string JsonHandler::to_cstr()
-{
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer< rapidjson::StringBuffer> writer(buffer);
+    StringBuffer buffer;
+    Writer<StringBuffer> writer(buffer);
     handler.Accept(writer);
 
     return std::string(buffer.GetString());
 }
 
 
-std::vector<std::string> sge::JsonHandler::keys()
+bool_n JsonHandler::has_item(string key)
 {
-    std::vector<std::string> keys;
+    return handler.HasMember(key.c_str());
+}
+
+
+bool_n sge::JsonHandler::is_list(std::string key)
+{
+    return has_item(key) && handler[key.c_str()].IsArray();
+}
+
+
+JsonHandler& JsonHandler::set_null(std::string k)
+{
+    if (!has_item(k)) {
+        // create a pair value
+        Value val;
+        Value key(k.c_str(), k.length(), handler.GetAllocator());
+
+        // add val to document
+        handler.AddMember(key, val, handler.GetAllocator());
+    }
+    else {
+        Value& val = handler[k.c_str()];
+        val.SetNull();
+    }
+
+    // return this
+    return *this;
+}
+
+
+bool_n JsonHandler::is_null(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].IsNull();
+    }
+
+    return FALSE;
+}
+
+
+JsonHandler& JsonHandler::set_bool(std::string k, bool_n b)
+{
+    if (!has_item(k)) {
+        // create a pair value
+        Value val(true);
+        Value key(k.c_str(), k.size(), handler.GetAllocator());
+
+        // add val to document
+        handler.AddMember(key, val, handler.GetAllocator());
+    }
+    else {
+        Value& val = handler[k.c_str()];
+        val.SetBool(b);
+    }
+ 
+
+    // return this
+    return *this;
+}
+
+
+bool_n JsonHandler::get_bool(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].GetBool();
+    }
+
+    return FALSE;
+}
+
+
+bool_n JsonHandler::is_bool(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].IsBool();
+    }
+    return FALSE;
+}
+
+
+JsonHandler& JsonHandler::set_int(std::string k, int_n n)
+{
+    if (!has_item(k)) {
+        // create a pair value
+        Value val(n);
+        Value key(k.c_str(), k.size(), handler.GetAllocator());
+
+        // add val to document
+        handler.AddMember(key, val, handler.GetAllocator());
+    }
+    else {
+        Value& val = handler[k.c_str()];
+        val.SetInt(n);
+    }
+
+    // return this
+    return *this;
+}
+
+
+int_n JsonHandler::get_int(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].GetInt();
+    }
+
+    return 0;
+}
+
+
+bool_n JsonHandler::is_int(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].IsInt();
+    }
+
+    return FALSE;
+}
+
+
+JsonHandler& JsonHandler::set_double(std::string k, double_n n)
+{
+    if (!has_item(k)) {
+        // create a pair value
+        Value val(n);
+        Value key(k.c_str(), k.size(), handler.GetAllocator());
+
+        // add val to document
+        handler.AddMember(key, val, handler.GetAllocator());
+    }
+    else {
+        Value& val = handler[k.c_str()];
+        val.SetDouble(n);
+    }
+
+    // return this
+    return *this;
+}
+
+
+double_n JsonHandler::get_double(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].GetDouble();
+    }
+
+    return 0;
+}
+
+
+bool_n JsonHandler::is_double(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].IsDouble();
+    }
+
+    return FALSE;
+}
+
+
+JsonHandler& JsonHandler::set_string(std::string k, std::string str)
+{
+    if (!has_item(k)) {
+        // create a pair value
+        Value val(str.c_str(), str.length(), handler.GetAllocator());
+        Value key(k.c_str(), k.size(), handler.GetAllocator());
+
+        // add val to document
+        handler.AddMember(key, val, handler.GetAllocator());
+    }
+    else {
+        Value& val = handler[k.c_str()];
+        val.SetString(str.c_str(), str.length(), handler.GetAllocator());
+    }
+
+    // return this
+    return *this;
+}
+
+
+const char* JsonHandler::get_string(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].GetString();
+    }
+
+    return nullptr;
+}
+
+
+void JsonHandler::clear() { handler.RemoveAllMembers(); }
+
+
+vector<std::string> JsonHandler::keys()
+{
+    vector<string> keys;
 
     // iterate the given json object and add each item to handler
     rapidjson::Value::MemberIterator m;
@@ -241,3 +258,215 @@ std::vector<std::string> sge::JsonHandler::keys()
 
     return keys;
 }
+
+
+template<typename T>
+void generic_append_array(Document& handler, string k, T list[], size_n size)
+{
+    // create an object type
+    Value key(k.c_str(), k.size(), handler.GetAllocator());
+
+    // to get the allocator handler to iteratively append the values to the value object
+    Document::AllocatorType& allocator = handler.GetAllocator();
+    // value object to stores the array
+    Value value(rapidjson::kArrayType);
+
+    // iterative appending the values
+    for (int i = 0; i < size; i++) {
+        value.PushBack(list[i], allocator);
+    }
+
+    // add the value to the document
+    handler.AddMember(key, value, allocator);
+}
+
+
+template<typename T>
+void generic_update_array(Document& handler, string k, T list[], size_n size)
+{
+    // get value object from document
+    Value& val = handler[k.c_str()];
+
+    // clear entities up
+    val.RemoveAllMembers();
+
+    // to get the allocator handler to iteratively append the values to the value object
+    rapidjson::Document::AllocatorType& allocator = handler.GetAllocator();
+
+    // iterative appending the values
+    for (int i = 0; i < size; i++) {
+        value.PushBack(list[i], allocator);
+    }
+}
+
+
+JsonHandler& JsonHandler::set_bool_list(std::string key, bool_n list[], size_n size)
+{
+    if (!has_item(key)) {
+        generic_append_array<bool_n>(handler, key, list, size);
+    }
+    else {
+        generic_update_array<bool_n>(handler, key, list, size);
+    }
+
+    // return this
+    return *this;
+}
+
+
+std::vector<bool_n> sge::JsonHandler::get_bool_list(std::string key)
+{
+    vector<bool_n> list;
+
+    if (is_list(key)) {
+        const Value& a = handler[key.c_str()];
+        
+        for (SizeType i = 0; i < a.Size(); i++) {
+            list.push_back(a[i].GetBool());
+        }
+    }
+
+    return list;
+}
+
+
+JsonHandler& sge::JsonHandler::set_int_list(std::string key, int_n list[], size_n size)
+{
+    if (!has_item(key)) {
+        generic_append_array<int_n>(handler, key, list, size);
+    }
+    else {
+        generic_update_array<int_n>(handler, key, list, size);
+    }
+
+    // return this
+    return *this;
+}
+
+
+std::vector<int_n> sge::JsonHandler::get_int_list(std::string key)
+{
+    vector<int_n> list;
+
+    if (is_list(key)) {
+        const Value& a = handler[key.c_str()];
+
+        for (SizeType i = 0; i < a.Size(); i++) {
+            list.push_back(a[i].GetInt());
+        }
+    }
+
+    return list;
+}
+
+
+JsonHandler& sge::JsonHandler::set_double_list(std::string key, double_n list[], size_n size)
+{
+    if (!has_item(key)) {
+        generic_append_array<double_n>(handler, key, list, size);
+    }
+    else {
+        generic_update_array<double_n>(handler, key, list, size);
+    }
+
+    // return this
+    return *this;
+}
+
+std::vector<double_n> sge::JsonHandler::get_double_list(std::string key)
+{
+    vector<double_n> list;
+
+    if (is_list(key)) {
+        const Value& a = handler[key.c_str()];
+
+        for (SizeType i = 0; i < a.Size(); i++) {
+            list.push_back(a[i].GetDouble());
+        }
+    }
+
+    return list;
+}
+
+JsonHandler& sge::JsonHandler::set_string_list(std::string k, const char* list[], size_n elems)
+{
+    if (!has_item(k)) {
+        // create an object key
+        Value key(k.c_str(), k.size(), handler.GetAllocator());
+
+        // to get the allocator handler to iteratively append the values to the value object
+        Document::AllocatorType& allocator = handler.GetAllocator();
+
+        // value object to stores the array
+        Value value(kArrayType);
+
+        // iterative appending the values
+        for (int i = 0; i < elems; i++) {
+            Value item(list[i], strlen(list[i]), handler.GetAllocator());
+            value.PushBack(item, allocator);
+        }
+
+        // add the value to the document
+        handler.AddMember(key, value, allocator);
+    }
+    else {
+        Value& val = handler[k.c_str()];
+        val.RemoveAllMembers();
+
+        // to get the allocator handler to iteratively append the values to the value object
+        Document::AllocatorType& allocator = handler.GetAllocator();
+
+        // iterative appending the values
+        for (int i = 0; i < elems; i++) {
+            Value item(list[i], strlen(list[i]), handler.GetAllocator());
+            val.PushBack(item, allocator);
+        }
+    }
+
+
+
+    // return this
+    return *this;
+}
+
+std::vector<std::string> sge::JsonHandler::get_string_list(std::string key)
+{
+    vector<string> list;
+
+    if (is_list(key)) {
+        const Value& a = handler[key.c_str()];
+
+        for (SizeType i = 0; i < a.Size(); i++) {
+            string str(a[i].GetString());
+            list.push_back(str);
+        }
+    }
+
+    return list;
+}
+
+JsonHandler& sge::JsonHandler::set_json(std::string k, std::string json)
+{
+    if (!has_item(k)) {
+        
+        // create key-value pair
+        Value key(k.c_str(), k.size(), handler.GetAllocator());
+        Value value(kObjectType);
+
+        JsonHandler handler(json);
+
+        for (string sk : handler.keys()) {
+            if (handler.is_bool(sk)) {
+                //TODO
+            }
+        }
+
+        
+    }
+
+   
+
+    return *this;
+}
+
+

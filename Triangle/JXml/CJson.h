@@ -21,133 +21,67 @@ namespace sge
         rapidjson::Document handler;
 
     public:
-        EXTERN ~JsonHandler();
+        EXTERN virtual ~JsonHandler();
 
     public:
-        /// <summary>
-        /// create an empty json object
-        /// </summary>
+
         EXTERN JsonHandler();
 
-        /// <summary>
-        /// parse a file with json string or just a json string directly
-        /// </summary>
-        /// <param name="str">the file path, or the json string</param>
-        EXTERN JsonHandler(const std::string& str);
+        EXTERN JsonHandler(std::string& str);
 
-        /// <summary>
-        /// test json object contains a valid object with the given key
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        EXTERN std::string to_str();
+
         EXTERN bool_n has_item(std::string key);
 
-        /// <summary>
-        /// append bool value to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_item(std::string key, bool_n b);
+        EXTERN bool_n is_list(std::string key);
 
-        /// <summary>
-        /// append integer to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_item(std::string key, int_n n);
+        EXTERN JsonHandler& set_bool(std::string key, bool_n b);
 
-        /// <summary>
-        /// append double to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_item(std::string key, double_n n);
+        EXTERN bool_n get_bool(std::string key);
 
-        /// <summary>
-        /// append string to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_item(std::string key, std::string str);
+        EXTERN bool_n is_bool(std::string key);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        EXTERN JsonHandler& append_null(std::string key);
+        EXTERN JsonHandler& set_int(std::string key, int_n n);
 
-        /// <summary>
-        /// append bool array to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="list"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_array(std::string key, bool_n list[], size_n size);
+        EXTERN int_n get_int(std::string key);
 
-        /// <summary>
-        /// append integer array to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="list"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_array(std::string key, int_n list[], size_n size);
+        EXTERN bool_n is_int(std::string key);
 
-        /// <summary>
-        /// append double array to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="list"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_array(std::string key, double_n list[], size_n size);
+        EXTERN JsonHandler& set_double(std::string key, double_n n);
 
+        EXTERN double_n get_double(std::string key);
 
-        /// <summary>
-        /// append string array to json string
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="list"></param>
-        /// <param name="elems"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_array(std::string key, const char* list[], size_n elems);
+        EXTERN bool_n is_double(std::string key);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="handler"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_json(std::string key, JsonHandler& handler);
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="handler"></param>
-        /// <returns></returns>
-        EXTERN JsonHandler& append_json(std::string key, std::string json);
+        EXTERN JsonHandler& set_string(std::string key, std::string str);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+        EXTERN const char* get_string(std::string key);
+
+        EXTERN JsonHandler& set_null(std::string key);
+
+        EXTERN bool_n is_null(std::string key);
+
+        EXTERN void clear();
+
         EXTERN std::vector<std::string> keys();
 
-        /// <summary>
-        /// assign json handler to another, operator overload
-        /// </summary>
-        /// <param name="D"></param>
-        EXTERN void operator=(const JsonHandler& D);
+        EXTERN JsonHandler& set_bool_list(std::string key, bool_n list[], size_n size);
 
-        /// <summary>
-        /// get string from json handler
-        /// </summary>
-        EXTERN std::string to_cstr();
+        EXTERN std::vector<bool_n> get_bool_list(std::string key);
+
+        EXTERN JsonHandler& set_int_list(std::string key, int_n list[], size_n size);
+
+        EXTERN std::vector<int_n> get_int_list(std::string key);
+
+        EXTERN JsonHandler& set_double_list(std::string key, double_n list[], size_n size);
+
+        EXTERN std::vector<double_n> get_double_list(std::string key);
+
+        EXTERN JsonHandler& set_string_list(std::string skey, const char* list[], size_n elems);
+
+        EXTERN std::vector<std::string> get_string_list(std::string key);
+
+        EXTERN JsonHandler& set_json(std::string key, std::string json);
     };
 } // namespace sge
 

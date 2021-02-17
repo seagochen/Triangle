@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="CommonTool.hpp" />
     <ClInclude Include="Convert.h" />
+    <ClInclude Include="Iterator.hpp" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="HashCode.h" />
