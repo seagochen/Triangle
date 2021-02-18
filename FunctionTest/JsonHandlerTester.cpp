@@ -9,51 +9,72 @@
 
 #ifdef FUNCTION_UNIT_TEST
 
-void func1() {
-	//std::string file = "D:\\Repositories\\Repo\\Triangle\\FunctionTest\\test.json";
-	//sge::JsonHandler json(file);
+void test_func1(sge::JsonHandler &json)
+{
+	// add some values
+	json.set_null("nullkey")
+		.set_bool("boolkey", false)
+		.set_int("intkey", 1000)
+		.set_double("doublekey", 13.2845)
+		.set_string("strkey", "this is string key");
 
-	//std::cout << json.has_item("hello") << std::endl
-	//	<< json.has_item("test_float_array") << std::endl
-	//	<< json.has_item("vec_key") << std::endl;
+	// add some array values
+	bool list1[] = { true, false, true, true };
+	json.set_bool_list("bool_list", list1, 4);
 
-	//json.append_item("key_test01", false);
-	//json.append_item("key_test02", -1000);
-	//json.append_item("key_test03", 13.975);
+	int list2[] = { 1, 2, 3, 4, 5 };
+	json.set_int_list("int_list", list2, 5);
 
-	//bool arr1[] = {true, false, true, true};
-	//json.append_array("key_test04", arr1, 4);
-	//
-	//int arr2[] = { 100, 101, -101, 102 };
-	//json.append_array("key_test05", arr2, 4);
-	//
-	//double arr3[] = { 13.45, 19.01, 0.789, 0.123 };
-	//json.append_array("key_test06", arr3, 4);
+	double list3[] = { 13.45, 19.01, 0.789, 0.123 };
+	json.set_double_list("double_list", list3, 4);
 
-	//const char *arr4[] = { "english", "japanese", "chinese" };
-	//json.append_array("key_test07", arr4, 3);
+	const char* arr4[] = { "english", "japanese", "chinese" };
+	json.set_string_list("str_list", arr4, 3);
 
-
-	//std::string jstr = " { \"hello\" : \"world\", \"t\" : true , \"f\" : false, \"n\": null, \"i\":123, \"pi\": 3.1416, \"a\":[1, 2, 3, 4] } ";;
-	//json.append_json("key_test08", jstr);
-	//json.clear();
-
-	//std::cout << json.to_cstr() << std::endl;
-
+	// print out new string
+	std::cout << json.to_str(TRUE) << std::endl;
 }
 
-void func2() 
+
+void test_func2(sge::JsonHandler& json)
 {
-	std::string file = "D:\\Repositories\\Repo\\Triangle\\FunctionTest\\test.json";
-	sge::JsonHandler json(file);
-	json.set_null("nullkey").set_string("strkey", "this is string key");
-	std::cout << json.to_str() << std::endl;
+	// modify some values
+	json.set_bool("boolkey", true)
+		.set_int("intkey", -300)
+		.set_double("doublekey", 0.72319)
+		.set_string("strkey", "value modified");
+
+	// modify some array values
+	bool list1[] = { false, false, false, false };
+	json.set_bool_list("bool_list", list1, 4);
+
+	int list2[] = { 3, 1, 2, 4, 5 };
+	json.set_int_list("int_list", list2, 5);
+
+	double list3[] = { 0.45, 307.01, 9.789, 3.123 };
+	json.set_double_list("double_list", list3, 4);
+
+	const char* arr4[] = { "japanese", "japanese", "japanese" };
+	json.set_string_list("str_list", arr4, 3);
+
+	// print out new string
+	std::cout << json.to_str(TRUE) << std::endl;
 }
 
 
 int main() {
 
-		func2();
+	std::string file = "D:\\Repositories\\Repo\\Triangle\\FunctionTest\\test.json";
+	sge::JsonHandler json(file);
+
+	// add values to json object
+	test_func1(json);
+
+	std::cout << "--------------------------------" << std::endl;
+
+	// modify some values
+	test_func2(json);
+
 	return 0;
 }
 

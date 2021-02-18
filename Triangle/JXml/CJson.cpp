@@ -1,10 +1,12 @@
 #include "CJson.h"
-#include <rapidjson/writer.h>
 #include <string.h>
 #include <memory.h>
 
 /// rapid libraries
 #include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/writer.h>
+
 
 using namespace std;
 using namespace sge;
@@ -39,13 +41,22 @@ JsonHandler::JsonHandler(string& str)
 }
 
 
-string JsonHandler::to_str()
+string JsonHandler::to_str(bool_n well_format)
 {
-    StringBuffer buffer;
-    Writer<StringBuffer> writer(buffer);
-    handler.Accept(writer);
+    if (well_format) {
+        StringBuffer buffer;
+        PrettyWriter<StringBuffer> writer(buffer);
+        handler.Accept(writer);
 
-    return std::string(buffer.GetString());
+        return std::string(buffer.GetString());
+    }
+    else {
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+        handler.Accept(writer);
+
+        return std::string(buffer.GetString());
+    }
 }
 
 
@@ -241,6 +252,16 @@ const char* JsonHandler::get_string(std::string key)
 }
 
 
+bool_n sge::JsonHandler::is_string(std::string key)
+{
+    if (has_item(key)) {
+        return handler[key.c_str()].IsString();
+    }
+
+    return FALSE;
+}
+
+
 void JsonHandler::clear() { handler.RemoveAllMembers(); }
 
 
@@ -284,19 +305,11 @@ void generic_append_array(Document& handler, string k, T list[], size_n size)
 template<typename T>
 void generic_update_array(Document& handler, string k, T list[], size_n size)
 {
-    // get value object from document
-    Value& val = handler[k.c_str()];
+    // remove the original key from json
+    handler.RemoveMember(k.c_str());
 
-    // clear entities up
-    val.RemoveAllMembers();
-
-    // to get the allocator handler to iteratively append the values to the value object
-    rapidjson::Document::AllocatorType& allocator = handler.GetAllocator();
-
-    // iterative appending the values
-    for (int i = 0; i < size; i++) {
-        value.PushBack(list[i], allocator);
-    }
+    // re-call 
+    generic_append_array(handler, k, list, size);
 }
 
 
@@ -388,43 +401,31 @@ std::vector<double_n> sge::JsonHandler::get_double_list(std::string key)
     return list;
 }
 
-JsonHandler& sge::JsonHandler::set_string_list(std::string k, const char* list[], size_n elems)
+JsonHandler& sge::JsonHandler::set_string_list(std::string k, 
+    const char* list[], size_n elems)
 {
-    if (!has_item(k)) {
-        // create an object key
-        Value key(k.c_str(), k.size(), handler.GetAllocator());
-
-        // to get the allocator handler to iteratively append the values to the value object
-        Document::AllocatorType& allocator = handler.GetAllocator();
-
-        // value object to stores the array
-        Value value(kArrayType);
-
-        // iterative appending the values
-        for (int i = 0; i < elems; i++) {
-            Value item(list[i], strlen(list[i]), handler.GetAllocator());
-            value.PushBack(item, allocator);
-        }
-
-        // add the value to the document
-        handler.AddMember(key, value, allocator);
+    if (has_item(k)) { // clear up the entity, and reload the string list
+        handler.RemoveMember(k.c_str());
     }
-    else {
-        Value& val = handler[k.c_str()];
-        val.RemoveAllMembers();
+        
+    // create an object key
+    Value key(k.c_str(), k.size(), handler.GetAllocator());
 
-        // to get the allocator handler to iteratively append the values to the value object
-        Document::AllocatorType& allocator = handler.GetAllocator();
+    // to get the allocator handler to iteratively append the values to the value object
+    Document::AllocatorType& allocator = handler.GetAllocator();
 
-        // iterative appending the values
-        for (int i = 0; i < elems; i++) {
-            Value item(list[i], strlen(list[i]), handler.GetAllocator());
-            val.PushBack(item, allocator);
-        }
+    // value object to stores the array
+    Value value(kArrayType);
+
+    // iterative appending the values
+    for (int i = 0; i < elems; i++) {
+        Value item(list[i], strlen(list[i]), handler.GetAllocator());
+        value.PushBack(item, allocator);
     }
 
-
-
+    // add the value to the document
+    handler.AddMember(key, value, allocator);
+   
     // return this
     return *this;
 }
@@ -459,6 +460,15 @@ JsonHandler& sge::JsonHandler::set_json(std::string k, std::string json)
             if (handler.is_bool(sk)) {
                 //TODO
             }
+
+            if (handler.is_int(sk)) {
+
+            }
+
+            if (handler.is_double(sk)) {
+
+            }
+
         }
 
         
