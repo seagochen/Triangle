@@ -20,8 +20,30 @@ namespace sge
     private:
         rapidjson::Document handler;
 
+    private:
+        EXTERN bool_n is_list(std::string key);
+
     public:
         EXTERN virtual ~JsonHandler();
+
+        enum ValueType {
+            NoneEntity,
+
+            VaccumValue,
+            BooleanValue,
+            IntegerValue,
+            DoubleValue,
+            StringValue,
+
+            EmptyList,
+            VaccumList,
+            BooleanList,
+            IntegerList,
+            DoubleList,
+            StringList,
+
+            JsonObject
+        };
 
     public:
 
@@ -37,11 +59,13 @@ namespace sge
 
         EXTERN bool_n has_item(std::string key);
 
-        EXTERN bool_n is_list(std::string key);
-
-        EXTERN void clear();
-
         EXTERN std::vector<std::string> keys();
+
+        EXTERN ValueType item_type(std::string key);
+
+        EXTERN void remove(std::string key);
+        
+        EXTERN void clear();
 
         /*-------------------------------------------------------------------------*/
 
@@ -49,25 +73,21 @@ namespace sge
 
         EXTERN bool_n get_bool(std::string key);
 
-        EXTERN bool_n is_bool(std::string key);
-
+        
         EXTERN JsonHandler& set_int(std::string key, int_n n);
 
         EXTERN int_n get_int(std::string key);
 
-        EXTERN bool_n is_int(std::string key);
-
+        
         EXTERN JsonHandler& set_double(std::string key, double_n n);
 
         EXTERN double_n get_double(std::string key);
 
-        EXTERN bool_n is_double(std::string key);
-
+        
         EXTERN JsonHandler& set_string(std::string key, std::string str);
 
         EXTERN const char* get_string(std::string key);
 
-        EXTERN bool_n is_string(std::string key);
 
         EXTERN JsonHandler& set_null(std::string key);
 
@@ -96,8 +116,11 @@ namespace sge
 
 
         EXTERN JsonHandler& set_json(std::string key, std::string json);
+
+        EXTERN JsonHandler& set_json(std::string key, JsonHandler& json);
+
+        EXTERN std::string get_json(std::string key);
     };
 } // namespace sge
-
 
 #endif

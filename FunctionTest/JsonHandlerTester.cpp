@@ -6,6 +6,8 @@
 
 #include <JXml/JXML.h>
 #include <iostream>
+#include <vector>
+#include <string>
 
 #ifdef FUNCTION_UNIT_TEST
 
@@ -62,6 +64,87 @@ void test_func2(sge::JsonHandler& json)
 }
 
 
+void test_func3(sge::JsonHandler& json)
+{
+	std::string str = "{\"project\":\"rapidjson\",\"stars\":10}";
+	json.set_json("json", str);
+
+	// print out new string
+	std::cout << json.to_str(TRUE) << std::endl;
+
+	std::string substr = json.get_json("json");
+	std::cout << substr << std::endl;
+}
+
+
+void test_func4(sge::JsonHandler& json)
+{
+	using namespace sge;
+
+	std::vector<std::string> keys = json.keys();
+	for (auto k : keys) {
+		std::cout << k << " is ";
+
+		switch (json.item_type(k)) {
+		case JsonHandler::ValueType::NoneEntity:
+			std::cout << "NoneEntity" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::VaccumValue:
+			std::cout << "VaccumValue" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::BooleanValue:
+			std::cout << "BooleanValue" << std::endl;
+			break;
+				
+		case JsonHandler::ValueType::IntegerValue:
+			std::cout << "IntegerValue" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::DoubleValue:
+			std::cout << "DoubleValue" << std::endl;
+			break;
+				
+		case JsonHandler::ValueType::StringValue:
+			std::cout << "StringValue" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::EmptyList:
+			std::cout << "EmptyList" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::VaccumList:
+			std::cout << "VaccumList" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::BooleanList:
+			std::cout << "BooleanList" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::IntegerList:
+			std::cout << "IntegerList" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::DoubleList:
+			std::cout << "DoubleList" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::StringList:
+			std::cout << "StringList" << std::endl;
+			break;
+
+		case JsonHandler::ValueType::JsonObject:
+			std::cout << "JsonObject" << std::endl;
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+
+
 int main() {
 
 	std::string file = "D:\\Repositories\\Repo\\Triangle\\FunctionTest\\test.json";
@@ -74,6 +157,16 @@ int main() {
 
 	// modify some values
 	test_func2(json);
+
+	std::cout << "--------------------------------" << std::endl;
+
+	// add sub json
+	test_func3(json);
+
+	std::cout << "--------------------------------" << std::endl;
+
+	// type check
+	test_func4(json);
 
 	return 0;
 }

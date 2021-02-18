@@ -133,15 +133,6 @@ bool_n JsonHandler::get_bool(std::string key)
 }
 
 
-bool_n JsonHandler::is_bool(std::string key)
-{
-    if (has_item(key)) {
-        return handler[key.c_str()].IsBool();
-    }
-    return FALSE;
-}
-
-
 JsonHandler& JsonHandler::set_int(std::string k, int_n n)
 {
     if (!has_item(k)) {
@@ -169,16 +160,6 @@ int_n JsonHandler::get_int(std::string key)
     }
 
     return 0;
-}
-
-
-bool_n JsonHandler::is_int(std::string key)
-{
-    if (has_item(key)) {
-        return handler[key.c_str()].IsInt();
-    }
-
-    return FALSE;
 }
 
 
@@ -212,16 +193,6 @@ double_n JsonHandler::get_double(std::string key)
 }
 
 
-bool_n JsonHandler::is_double(std::string key)
-{
-    if (has_item(key)) {
-        return handler[key.c_str()].IsDouble();
-    }
-
-    return FALSE;
-}
-
-
 JsonHandler& JsonHandler::set_string(std::string k, std::string str)
 {
     if (!has_item(k)) {
@@ -252,13 +223,11 @@ const char* JsonHandler::get_string(std::string key)
 }
 
 
-bool_n sge::JsonHandler::is_string(std::string key)
+void sge::JsonHandler::remove(std::string key)
 {
     if (has_item(key)) {
-        return handler[key.c_str()].IsString();
+        handler.RemoveMember(key.c_str());
     }
-
-    return FALSE;
 }
 
 
@@ -278,6 +247,31 @@ vector<std::string> JsonHandler::keys()
     }
 
     return keys;
+}
+
+JsonHandler::ValueType sge::JsonHandler::item_type(std::string key)
+{
+    if (!has_item(key)) return ValueType::NoneEntity;
+
+    Value& val = handler[key.c_str()];
+    if (val.IsNull()) return ValueType::VaccumValue;
+    
+    if (val.IsBool()) return ValueType::BooleanValue;
+    if (val.IsInt()) return ValueType::IntegerValue;
+    if (val.IsDouble()) return ValueType::DoubleValue;
+    if (val.IsString()) return ValueType::StringValue;
+
+    if (is_list(key) and val.Capacity() <= 0) return ValueType::EmptyList;
+    if (is_list(key) and val[0].IsNull()) return ValueType::VaccumList;
+
+    if (is_list(key) and val[0].IsBool()) return ValueType::BooleanList;
+    if (is_list(key) and val[0].IsInt()) return ValueType::IntegerList;
+    if (is_list(key) and val[0].IsDouble()) return ValueType::DoubleList;
+    if (is_list(key) and val[0].IsString()) return ValueType::StringList;
+
+    if (val.IsObject()) return ValueType::JsonObject;
+
+    return ValueType::NoneEntity;
 }
 
 
@@ -404,9 +398,7 @@ std::vector<double_n> sge::JsonHandler::get_double_list(std::string key)
 JsonHandler& sge::JsonHandler::set_string_list(std::string k, 
     const char* list[], size_n elems)
 {
-    if (has_item(k)) { // clear up the entity, and reload the string list
-        handler.RemoveMember(k.c_str());
-    }
+    if (has_item(k)) { remove(k); }
         
     // create an object key
     Value key(k.c_str(), k.size(), handler.GetAllocator());
@@ -448,35 +440,41 @@ std::vector<std::string> sge::JsonHandler::get_string_list(std::string key)
 
 JsonHandler& sge::JsonHandler::set_json(std::string k, std::string json)
 {
-    if (!has_item(k)) {
+    if (has_item(k)) { remove(k); }
+    
+    // create key-value pair
+    Value key(k.c_str(), k.size(), handler.GetAllocator());
+    Value value(kObjectType);
+
+    // document parse the json
+    Document sub_json;
+    sub_json.Parse(json.c_str());
+
+    // copy data from document
+    value.CopyFrom(sub_json, handler.GetAllocator());
         
-        // create key-value pair
-        Value key(k.c_str(), k.size(), handler.GetAllocator());
-        Value value(kObjectType);
-
-        JsonHandler handler(json);
-
-        for (string sk : handler.keys()) {
-            if (handler.is_bool(sk)) {
-                //TODO
-            }
-
-            if (handler.is_int(sk)) {
-
-            }
-
-            if (handler.is_double(sk)) {
-
-            }
-
-        }
-
-        
-    }
-
-   
+    // add the value to the document
+    handler.AddMember(key, value, handler.GetAllocator());
 
     return *this;
 }
 
+JsonHandler& sge::JsonHandler::set_json(std::string key, JsonHandler& json)
+{
+    return set_json(key, json.to_str());
+}
 
+std::string sge::JsonHandler::get_json(std::string key)
+{
+    if (has_item(key)) {
+        Value& val = handler[key.c_str()];
+
+        StringBuffer buffer;
+        PrettyWriter<StringBuffer> writer(buffer);
+        val.Accept(writer);
+
+        return std::string(buffer.GetString());
+    }
+
+    return "{}";
+}
