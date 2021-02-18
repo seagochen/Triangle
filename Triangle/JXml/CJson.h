@@ -41,6 +41,8 @@ namespace sge
             IntegerList,
             DoubleList,
             StringList,
+            ArrayList,
+            JsonList,
 
             JsonObject
         };

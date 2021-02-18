@@ -269,6 +269,9 @@ JsonHandler::ValueType sge::JsonHandler::item_type(std::string key)
     if (is_list(key) and val[0].IsDouble()) return ValueType::DoubleList;
     if (is_list(key) and val[0].IsString()) return ValueType::StringList;
 
+    if (is_list(key) and val[0].IsArray()) return ValueType::ArrayList;
+    if (is_list(key) and val[0].IsObject()) return ValueType::JsonList;
+
     if (val.IsObject()) return ValueType::JsonObject;
 
     return ValueType::NoneEntity;
