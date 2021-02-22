@@ -5,7 +5,7 @@
 #include <sys/time.h>
 #endif
 
-#include "Timer.h"
+#include "Core/Timer.h"
 
 using namespace sge;
 

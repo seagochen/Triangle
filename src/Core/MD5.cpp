@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "MD5.h"
+#include "Core/MD5.h"
 
 #ifndef HAVE_OPENSSL
 

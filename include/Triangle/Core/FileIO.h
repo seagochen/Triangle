@@ -28,6 +28,12 @@ namespace sge {
         EXTERN static void write(std::string filename, const char* fz);
 
         /// <summary>
+        /// make a new directory
+        /// </summary>
+        /// <param name="folderpath">the path to new a folder</param>
+        EXTERN static bool_n mkdir(std::string folderpath);
+
+        /// <summary>
         /// get the file size
         /// </summary>
         /// <param name="filename">the path to a file</param>

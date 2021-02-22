@@ -1,4 +1,4 @@
-#include "CJson.h"
+#include "JXML/CJson.h"
 #include <string.h>
 #include <memory.h>
 
@@ -29,6 +29,8 @@ JsonHandler::JsonHandler(string& str)
     elif(Validator::match_filepath(str)) {
         // this string contains a valid file path
         const char* fz = FileIO::read(str);
+
+        // parse the json code
         handler.Parse(fz);
 
         // to avoid memory leak

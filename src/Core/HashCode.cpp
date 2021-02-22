@@ -1,8 +1,8 @@
-#include "HashCode.h"
-#include "StrUtils.h"
-#include "MD5.h"
-#include "SHA256.h"
-#include "SHA1.h"
+#include "Core/HashCode.h"
+#include "Core/StrUtils.h"
+#include "Core/MD5.h"
+#include "Core/SHA256.h"
+#include "Core/SHA1.h"
 #include <iostream>
 #include <memory.h>
 

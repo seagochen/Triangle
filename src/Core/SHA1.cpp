@@ -1,4 +1,4 @@
-#include "SHA1.h"
+#include "Core/SHA1.h"
 /*
     sha1.cpp - source code of
     ============

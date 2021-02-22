@@ -1,7 +1,7 @@
-#include "Validators.h"
-#include "CommonTool.hpp"
-#include "StrUtils.h"
-#include "Convert.h"
+#include "Core/Validators.h"
+#include "Core/CommonTool.hpp"
+#include "Core/StrUtils.h"
+#include "Core/Convert.h"
 
 #include <vector>
 #include <iostream>
@@ -42,7 +42,7 @@ bool_n Validator::match_words(std::string str)
 bool_n Validator::match_filepath(std::string str)
 {
     if (str.length() <= 0) return false;
-    regex re("^(\\|/|\\.|\\w).*");
+    regex re("^(/|\\|\\.|\\w+).*");
     return regex_match(str, re);
 };
 
@@ -86,7 +86,7 @@ bool_n Validator::match_ipv4_group(std::string str, type_n CLASS)
             return FALSE;
         }
 
-        // °ÑIPµØÖ·£¨ÎÄ±¾£©½øÐÐ×ª»»
+        // ï¿½ï¿½IPï¿½ï¿½Ö·ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
         std::vector<int_n> nips;
         for (auto token : tokens) {
             int_n n = Converter::str_to_int(token);

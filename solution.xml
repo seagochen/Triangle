@@ -10,12 +10,12 @@
     <solution>
 
         <!-- Three types available, dynamic, static, exe -->
-        <project name="triangle" output="build" type="static" src="Triangle">
+        <project name="triangle" output="build" type="static" src="src">
 
             <!-- Headers，non-system third-party header files, need to be given specific paths,
              but also support relative paths -->
             <includes>
-                <path>Triangle</path>
+                <path>include/Triangle</path>
                 <path>include</path>
                 <path>/opt/boost/boost_1.75.0/include</path>
             </includes>
@@ -28,13 +28,13 @@
         </project>
 
         <!-- Three types available, dynamic, static, exe -->
-        <project name="test" output="build" type="exe" src="FunctionTest">
+        <project name="test" output="build" type="exe" src="test">
 
             <!-- Headers，non-system third-party header files, need to be given specific paths,
              but also support relative paths -->
             <includes>
-                <path>Triangle</path>
-		<path>include</path>
+                <path>include/Triangle</path>
+		        <path>include</path>
                 <path>/opt/boost/boost_1.75.0/include</path>
             </includes>
 

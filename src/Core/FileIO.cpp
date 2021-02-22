@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "FileIO.h"
-#include "Validators.h"
-#include "CommonTool.hpp"
-#include "StrUtils.h"
+#include "Core/FileIO.h"
+#include "Core/Validators.h"
+#include "Core/CommonTool.hpp"
+#include "Core/StrUtils.h"
 
 using namespace sge;
 using namespace boost;
@@ -58,6 +58,20 @@ void FileIO::write(std::string filename, const char* fz)
     file.write(fz, strlen(fz));
     file.close();
 }
+
+
+bool_n FileIO::mkdir(std::string folderpath)
+{
+    using namespace boost::filesystem;
+
+    if (not is_exist(folderpath)) {
+        path p(folderpath);
+        return filesystem::create_directories(p);
+    } elif (not is_dir(folderpath)) {
+        std::cerr << folderpath << " is exists, but a file" << std::endl;
+        return FALSE;
+    }
+};
 
 
 size_n FileIO::length(std::string filepath)

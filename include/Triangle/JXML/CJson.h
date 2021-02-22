@@ -51,8 +51,15 @@ namespace sge
 
         /*-------------------------------------------------------------------------*/
         
+        /// <summary>
+        /// default constructor
+        /// </summary>
         EXTERN JsonHandler();
 
+        /// <summary>
+        /// default constructor with string
+        /// </summary>
+        /// <param name="str">json string or path to a json file</param>
         EXTERN JsonHandler(std::string& str);
 
         /*-------------------------------------------------------------------------*/

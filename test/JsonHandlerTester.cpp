@@ -4,7 +4,7 @@
 #define FUNCTION_UNIT_TEST
 #endif
 
-#include <JXml/JXML.h>
+#include <JXML/JXML.h>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -145,10 +145,22 @@ void test_func4(sge::JsonHandler& json)
 }
 
 
-int main() {
+int main(int argc, const char* argv[]) {
 
+#if __WIN32
 	std::string file = "D:\\Repositories\\Repo\\Triangle\\FunctionTest\\test.json";
+#else
+	if (argc < 2) {
+		std::cerr << "failed" << std::endl;
+		return -1;
+	}
+
+	std::string file = std::string(argv[1]);
+	std::cout << file << std::endl;
+#endif
+
 	sge::JsonHandler json(file);
+
 
 	// add values to json object
 	test_func1(json);

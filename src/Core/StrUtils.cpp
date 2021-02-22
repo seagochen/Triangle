@@ -1,5 +1,5 @@
 #include <string.h>
-#include "StrUtils.h"
+#include "Core/StrUtils.h"
 
 char* ltrim(char const* s)
 {
