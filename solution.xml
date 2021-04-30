@@ -28,7 +28,7 @@
         </project>
 
         <!-- Three types available, dynamic, static, exe -->
-        <project name="test" output="build" type="exe" src="test">
+        <!-- <project name="test" output="build" type="exe" src="test">
 
             <!-- Headers，non-system third-party header files, need to be given specific paths,
              but also support relative paths -->
@@ -44,7 +44,7 @@
                 <item>-lboost_system</item>
                 <item>-lboost_filesystem</item>
             </libraries>
-        </project>
+        </project> -->
     </solution>
 
 </config>
