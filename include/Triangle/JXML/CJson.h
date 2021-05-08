@@ -76,6 +76,8 @@ namespace sge
         
         EXTERN void clear();
 
+        void from_json(std::string str);
+
         /*-------------------------------------------------------------------------*/
 
         EXTERN JsonHandler& set_bool(std::string key, bool_n b);
@@ -104,31 +106,70 @@ namespace sge
 
         /*-------------------------------------------------------------------------*/
 
-        EXTERN JsonHandler& set_bool_list(std::string key, bool_n list[], size_n size);
+        // { "foo" : [v1, v2, v3, v4, v5, ..., vn]}
+        JsonHandler& set_bool_list(std::string key, bool list[], int size);
 
-        EXTERN std::vector<bool_n> get_bool_list(std::string key);
-
-
-        EXTERN JsonHandler& set_int_list(std::string key, int_n list[], size_n size);
-
-        EXTERN std::vector<int_n> get_int_list(std::string key);
+        std::vector<bool> get_bool_list(std::string key);
 
 
-        EXTERN JsonHandler& set_double_list(std::string key, double_n list[], size_n size);
+        // { "foo" : [v1, v2, v3, v4, v5, ..., vn]}
+        JsonHandler& set_int_list(std::string key, int list[], int size);
 
-        EXTERN std::vector<double_n> get_double_list(std::string key);
-
-
-        EXTERN JsonHandler& set_string_list(std::string skey, const char* list[], size_n elems);
-
-        EXTERN std::vector<std::string> get_string_list(std::string key);
+        std::vector<int> get_int_list(std::string key);
 
 
-        EXTERN JsonHandler& set_json(std::string key, std::string json);
+        // { "foo" : [v1, v2, v3, v4, v5, ..., vn]}
+        JsonHandler& set_double_list(std::string key, double list[], int size);
 
-        EXTERN JsonHandler& set_json(std::string key, JsonHandler& json);
+        std::vector<double> get_double_list(std::string key);
 
-        EXTERN std::string get_json(std::string key);
+
+        // { "foo" : [v1, v2, v3, v4, v5, ..., vn]}
+        JsonHandler& set_string_list(std::string skey, const char* list[], int elems);
+
+        std::vector<std::string> get_string_list(std::string key);
+
+
+        // { "foo" : {"fo1":"va1", "fo2":"va2", ..., "fon":"van"}}
+        JsonHandler& set_json(std::string key, std::string json);
+
+        std::string get_json(std::string key);
+
+
+        // Json handler as sub json string
+        JsonHandler& set_json(std::string key, JsonHandler& json);
+
+
+        // { "foo" : [[va1, va2, va3, ..., van], [vb1, vb2, vb3, ..., vbn], ... [vn1, vn2, vn3, ..., vnn]]}
+        JsonHandler& set_multi_int_lists(std::string key, std::vector<std::vector<int>> multi);
+
+        std::vector<std::vector<int>> get_multi_int_lists(std::string key);
+
+
+        // { "foo" : [[va1, va2, va3, ..., van], [vb1, vb2, vb3, ..., vbn], ... [vn1, vn2, vn3, ..., vnn]]}
+        JsonHandler& set_multi_bool_lists(std::string key, std::vector<std::vector<bool>> multi);
+
+        std::vector<std::vector<bool>> get_multi_bool_lists(std::string key);
+
+
+        // { "foo" : [[va1, va2, va3, ..., van], [vb1, vb2, vb3, ..., vbn], ... [vn1, vn2, vn3, ..., vnn]]}
+        JsonHandler& set_multi_double_lists(std::string key, std::vector<std::vector<double>> multi);
+
+        std::vector<std::vector<double>> get_multi_double_lists(std::string key);
+
+
+        // { "foo" : [[va1, va2, va3, ..., van], [vb1, vb2, vb3, ..., vbn], ... [vn1, vn2, vn3, ..., vnn]]}
+        JsonHandler& set_multi_string_lists(std::string key, std::vector<std::vector<std::string>> multi);
+
+        std::vector<std::vector<std::string>> get_multi_string_lists(std::string key);
+
+
+        // { "foo" : [{"fo1": ...}, {"fo2": ...}, ... {"fon": ...}]}
+        JsonHandler& set_multi_json_lists(std::string key, std::vector<std::string> multi);
+
+        JsonHandler& set_multi_json_lists(std::string key, std::vector<JsonHandler> multi);
+
+        std::vector<std::string> get_multi_json_lists(std::string key);
     };
 } // namespace sge
 
